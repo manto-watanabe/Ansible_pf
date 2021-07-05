@@ -1,0 +1,9 @@
+- hosts: webservers
+  become: yes
+  roles:
+    - nginx
+    - git
+    - ruby
+    - nodejs
+    - mysql
+    - app

@@ -1,0 +1,15 @@
+
+# MySQL version settings
+__version: 8.0
+__repo_url: https://dev.mysql.com/get/mysql80-community-release-el7-3.noarch.rpm
+__repo_name: mysql80-community
+
+# password settings
+__root_new_password: Rootpass123! 
+
+# project database settings
+__project_db_create: False
+__project_db_name: test
+__project_db_encoding: utf8
+__project_db_user_name: test
+__project_db_user_password: Rootpass123!

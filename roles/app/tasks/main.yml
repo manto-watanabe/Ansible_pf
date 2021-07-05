@@ -1,0 +1,42 @@
+- name: Create app dir
+  file:
+    path: /var/www
+    state: directory
+    owner: ec2-user
+    group: ec2-user
+    mode: 0777
+
+- name: check if {{ app_repository_name }} already deployed
+  stat:
+    path: "/var/www/{{ app_repository_name }}"
+  register: app_repository
+
+- name: git clone app
+  ansible.builtin.git:
+    repo: "{{ app_url }}"
+    dest: /var/www
+  when:
+    - not app_repository.stat.exists
+    - not ansible_check_mode
+
+- name: Set database.yml
+  template:
+    src: roles/app/templates/database.yml.j2
+    dest: /var/www/{{ app_repository_name }}/config/database.yml
+  when: not app_repository.stat.exists
+
+- name: Comment out of default source_path
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin'
+    line: '# Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/bin'
+    validate: '/usr/sbin/visudo -cf %s'
+
+- name: Enable env_keep
+  lineinfile:
+    path: /etc/sudoers
+    state: present
+    regexp: '^# Defaults   env_keep += "HOME"'
+    line: 'Defaults   env_keep += "PATH"'
+    validate: '/usr/sbin/visudo -cf %s'
