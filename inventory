@@ -1,2 +1,2 @@
 [webservers]
-52.196.162.231 ansible_ssh_private_key_file=/home/ec2-user/var/lib/jenkins/.ssh/udemysample1.pem ansible_ssh_user=ec2-user
+52.196.162.231 ansible_ssh_private_key_file=~/.ssh/udemysample1.pem ansible_ssh_user=ec2-user
